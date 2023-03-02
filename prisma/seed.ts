@@ -16,6 +16,43 @@ async function main() {
     });
   }
 
+  let ticketTypes = await prisma.ticketType.findFirst();
+  if (!ticketTypes) {
+    const onlineTicketType = await prisma.ticketType.create({
+      data: { name: "Online", price: 100, includesHotel: false, isRemote: true },
+    });
+
+    const localTicketType = await prisma.ticketType.create({
+      data: { name: "Presencial", price: 100, includesHotel: true, isRemote: false },
+    });
+
+    // BOLD TEXT, GREEN TEXT, "MESSAGE", RESET TERMINAL STYLES
+    console.log("\x1b[1m", "\x1b[32m", `✔️ "Presencial" and "Online" ticket types created successfully 🥳 `, "\x1b[0m");
+  }
+
+  let user = await prisma.user.findFirst({ include: { Enrollment: true } });
+  if (!user?.Enrollment) {
+    const newUser = await prisma.user.create({
+      data: {
+        email: "user@user.com",
+        password: "useruser",
+      },
+    });
+
+    await prisma.enrollment.create({
+      data: {
+        name: "John Doe",
+        cpf: "77963936014",
+        birthday: "01/01/1999",
+        phone: "11987654321",
+        User: { connect: { id: newUser.id } },
+      },
+    });
+
+    console.log("\x1b[1m", "\x1b[32m", "✔️ New user with enrollment created successfully 🥳 ", "\x1b[0m");
+    console.log({ newUser });
+  }
+
   console.log({ event });
 }
 
