@@ -45,14 +45,14 @@ async function main() {
       data: {
         name: "John Doe",
         cpf: "77963936014",
-        birthday: "01/01/1999",
+        birthday: dayjs("01-01-2000").toDate(),
         phone: "11987654321",
         User: { connect: { id: newUser.id } },
       },
     });
 
     console.log("\x1b[1m", "\x1b[32m", "✔️ New user with enrollment created successfully 🥳 ", "\x1b[0m");
-    console.log({ newUser });
+    console.log({ ...newUser, password: "useruser" });
   }
 
   console.log({ event });
