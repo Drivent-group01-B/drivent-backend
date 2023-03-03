@@ -24,7 +24,7 @@ async function main() {
     });
 
     const localTicketType = await prisma.ticketType.create({
-      data: { name: "Presencial", price: 100, includesHotel: true, isRemote: false },
+      data: { name: "Presencial", price: 250, includesHotel: true, isRemote: false },
     });
 
     // BOLD TEXT, GREEN TEXT, "MESSAGE", RESET TERMINAL STYLES
