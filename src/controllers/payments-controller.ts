@@ -1,5 +1,6 @@
-import { AuthenticatedRequest } from "@/middlewares";
+import { AuthenticatedRequest, handleApplicationErrors } from "@/middlewares";
 import paymentService from "@/services/payments-service";
+import { loadStripe } from "@stripe/stripe-js";
 import { Response } from "express";
 import httpStatus from "http-status";
 
@@ -28,10 +29,7 @@ export async function getPaymentByTicketId(req: AuthenticatedRequest, res: Respo
 export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
   try {
     const { userId } = req;
-    const {
-      ticketId,
-      cardData,
-    } = req.body;
+    const { ticketId, cardData } = req.body;
 
     if (!ticketId || !cardData) {
       return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -48,5 +46,24 @@ export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
     return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
+
+type PaymentIntentParams = {
+  amount: number;
+  currency: string;
+};
+
+export async function paymentIntent(req: AuthenticatedRequest, res: Response) {
+  const { amount, currency } = req.body as PaymentIntentParams;
+
+  const stripeKey = "sk_test";
+
+  try {
+    const stripe = await loadStripe(stripeKey);
+    // const paymentIntent = await stripe.
+    return res.send("ok");
+  } catch (error) {
+    handleApplicationErrors(error, req, res);
   }
 }
