@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
 
 async function main() {
   let event = await prisma.event.findFirst();
@@ -32,10 +33,11 @@ async function main() {
 
   let user = await prisma.user.findFirst({ include: { Enrollment: true } });
   if (!user?.Enrollment) {
+    const hashedPass = await bcrypt.hash("useruser", 12);
     const newUser = await prisma.user.create({
       data: {
         email: "user@user.com",
-        password: "useruser",
+        password: hashedPass,
       },
     });
 
