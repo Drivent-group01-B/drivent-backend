@@ -57,6 +57,7 @@ export async function paymentIntent(req: AuthenticatedRequest, res: Response) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: STRIPE_DEFAULT_CURRENCY,
+      automatic_payment_methods: { enabled: true },
     });
     return res.send({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
