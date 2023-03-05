@@ -1,6 +1,7 @@
-import { AuthenticatedRequest, handleApplicationErrors } from "@/middlewares";
+// eslint-disable-next-line boundaries/element-types
+import { stripe, STRIPE_DEFAULT_CURRENCY } from "@/config/stripe";
+import { AuthenticatedRequest } from "@/middlewares";
 import paymentService from "@/services/payments-service";
-import { loadStripe } from "@stripe/stripe-js";
 import { Response } from "express";
 import httpStatus from "http-status";
 
@@ -49,21 +50,16 @@ export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
   }
 }
 
-type PaymentIntentParams = {
-  amount: number;
-  currency: string;
-};
-
 export async function paymentIntent(req: AuthenticatedRequest, res: Response) {
-  const { amount, currency } = req.body as PaymentIntentParams;
-
-  const stripeKey = "sk_test";
+  const { amount } = req.body;
 
   try {
-    const stripe = await loadStripe(stripeKey);
-    // const paymentIntent = await stripe.
-    return res.send("ok");
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: STRIPE_DEFAULT_CURRENCY,
+    });
+    return res.send({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    handleApplicationErrors(error, req, res);
+    res.status(500).send({ ...error });
   }
 }
