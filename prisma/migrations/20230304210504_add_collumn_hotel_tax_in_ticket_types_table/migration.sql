@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TicketType" ADD COLUMN     "hotelTax" INTEGER NOT NULL DEFAULT 350;
