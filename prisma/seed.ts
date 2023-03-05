@@ -48,6 +48,16 @@ async function main() {
         birthday: dayjs("01-01-2000").toDate(),
         phone: "11987654321",
         User: { connect: { id: newUser.id } },
+        Address: {
+          create: {
+            cep: "01304001",
+            street: "Rua Augusta",
+            number: "1",
+            neighborhood: "Consolação",
+            city: "São Paulo",
+            state: "São Paulo",
+          },
+        },
       },
     });
 
