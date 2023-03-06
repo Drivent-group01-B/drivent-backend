@@ -45,6 +45,20 @@ async function createTicket(ticket: CreateTicketParams) {
   });
 }
 
+async function upsert(
+  ticketId: number,
+  createdTicket: CreateTicketParams,
+  updatedTicket: UpdateTicketParams,
+) {
+  return prisma.ticket.upsert({
+    where: {
+      id: ticketId,
+    },
+    create: createdTicket,
+    update: updatedTicket,
+  });
+}
+
 async function ticketProcessPayment(ticketId: number) {
   return prisma.ticket.update({
     where: {
@@ -57,11 +71,13 @@ async function ticketProcessPayment(ticketId: number) {
 }
 
 export type CreateTicketParams = Omit<Ticket, "id" | "createdAt" | "updatedAt">;
+export type UpdateTicketParams = Omit<CreateTicketParams, "enrollmentId">;
 
 const ticketRepository = {
   findTicketTypes,
   findTicketByEnrollmentId,
   createTicket,
+  upsert,
   findTickeyById,
   findTickeWithTypeById,
   ticketProcessPayment,

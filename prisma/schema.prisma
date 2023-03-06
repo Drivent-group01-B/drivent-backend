@@ -76,6 +76,7 @@ model TicketType {
   price         Int
   isRemote      Boolean
   includesHotel Boolean
+  hotelTax      Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   Ticket        Ticket[]
@@ -88,6 +89,7 @@ model Ticket {
   enrollmentId Int
   Enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id])
   status       TicketStatus
+  includedHotel Boolean
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   Payment      Payment[]
