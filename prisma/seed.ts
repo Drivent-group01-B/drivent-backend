@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Hotel, PrismaClient, Room } from "@prisma/client";
 import dayjs from "dayjs";
 const prisma = new PrismaClient();
 import bcrypt from "bcrypt";
@@ -66,6 +66,170 @@ async function main() {
   }
 
   console.log({ event });
+
+  const hotels = await prisma.hotel.findMany();
+  if (hotels.length === 0) {
+
+    let hotel_example;
+    let rooms;
+   
+    hotel_example = await prisma.hotel.create({
+      data: { name: "Driven Resort", image: "https://www.dicasdeviagem.com/wp-content/uploads/2022/05/hotel-fasano-angra-dos-reis-e1652707437760.jpg"},
+    });
+
+    rooms = [
+      {
+        name: '101',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '102',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '103',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '104',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '105',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '106',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '107',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '108',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+    ];
+
+    await prisma.room.createMany({
+      data: rooms
+    });
+
+    hotel_example = await prisma.hotel.create({
+      data: { name: "Driven Palace", image: "https://claudia.abril.com.br/wp-content/uploads/2020/01/cinco-spas-dentro-de-hoteis-1.jpg?quality=85&strip=info" },
+    });
+
+    rooms = [
+      {
+        name: '101',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '102',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '103',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '104',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '105',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '106',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '107',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '108',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+    ];
+
+    await prisma.room.createMany({
+      data: rooms
+    });
+
+    hotel_example = await prisma.hotel.create({
+      data: { name: "Driven World", image: "https://i0.wp.com/www.guiamexico.com.br/wp-content/uploads/2019/01/zona-hoteleira-de-cancun22-t2AJq.jpg?resize=768%2C568&strip=all&ssl=1" },
+    });
+
+    rooms = [
+      {
+        name: '101',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '102',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '103',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '104',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '105',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '106',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '107',
+        capacity: 2,
+        hotelId: hotel_example?.id
+      },
+      {
+        name: '108',
+        capacity: 1,
+        hotelId: hotel_example?.id
+      },
+    ];
+
+    await prisma.room.createMany({
+      data: rooms
+    });
+
+
+    // BOLD TEXT, GREEN TEXT, "MESSAGE", RESET TERMINAL STYLES
+    console.log("\x1b[1m", "\x1b[32m", `✔️ "hotels with rooms created successfully 🥳 `, "\x1b[0m");
+  }
 }
 
 main()
