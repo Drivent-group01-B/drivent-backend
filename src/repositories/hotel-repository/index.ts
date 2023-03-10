@@ -9,15 +9,17 @@ async function findHotels() {
 }
 
 async function findRoomsByHotelId(hotelId: number) {
-  // return prisma.hotel.findFirst({
-  //   where: {
-  //     id: hotelId,
-  //   },
-  //   include: {
-  //     Rooms: true,
-  //   },
-  // });
+  return prisma.hotel.findFirst({
+    where: {
+      id: hotelId,
+    },
+    include: {
+      Rooms: true,
+    },
+  });
+}
 
+async function findRoomsDetailsByHotelId(hotelId: number) {
   const rooms = await prisma.room.findMany({
     where: { Hotel: { id: hotelId } },
     select: {
@@ -27,18 +29,23 @@ async function findRoomsByHotelId(hotelId: number) {
       capacity: true,
       _count: { select: { Booking: true } },
     },
+    orderBy: { id: "asc" },
   });
 
-  const hotel = await prisma.hotel.findUnique({
-    where: { id: hotelId },
+  const availability = { total: 0, occupied: 0 };
+
+  rooms.forEach((room) => {
+    availability.total += room.capacity;
+    availability.occupied += room._count.Booking;
   });
 
-  return { hotel, rooms: rooms };
+  return { availability, rooms: rooms };
 }
 
 const hotelRepository = {
   findHotels,
   findRoomsByHotelId,
+  findRoomsDetailsByHotelId,
 };
 
 export default hotelRepository;
