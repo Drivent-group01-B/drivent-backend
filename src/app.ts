@@ -18,8 +18,21 @@ import {
   hotelsRouter,
   bookingRouter
 } from "@/routers";
+import { createClient } from "redis";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
+
+export const redis = createClient({
+  url: process.env.REDIS_URL
+});
+
+async function connectRedis() {
+  await redis.connect();
+}
+connectRedis();
+
 app
   .use(cors())
   .use(express.json())
