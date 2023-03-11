@@ -10,6 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model User {
   id         Int          @id @default(autoincrement())
   email      String       @unique @db.VarChar(255)
@@ -83,16 +87,16 @@ model TicketType {
 }
 
 model Ticket {
-  id           Int          @id @default(autoincrement())
-  ticketTypeId Int
-  TicketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
-  enrollmentId Int
-  Enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id])
-  status       TicketStatus
+  id            Int          @id @default(autoincrement())
+  ticketTypeId  Int
+  TicketType    TicketType   @relation(fields: [ticketTypeId], references: [id])
+  enrollmentId  Int
+  Enrollment    Enrollment   @relation(fields: [enrollmentId], references: [id])
+  status        TicketStatus
   includedHotel Boolean
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  Payment      Payment[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Payment       Payment[]
 }
 
 enum TicketStatus {
