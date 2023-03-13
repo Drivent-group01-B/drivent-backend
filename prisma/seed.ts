@@ -20,12 +20,17 @@ async function main() {
   let ticketTypes = await prisma.ticketType.findFirst();
   if (!ticketTypes) {
     const onlineTicketType = await prisma.ticketType.create({
-      data: { name: "Online", price: 100, includesHotel: false, isRemote: true, hotelTax: 0 },
+      data: { name: "Online", price: 100, includesHotel: false, isRemote: true },
     });
 
     const localTicketType = await prisma.ticketType.create({
-      data: { name: "Presencial", price: 100, includesHotel: true, isRemote: false, hotelTax: 350 },
+      data: { name: "Presencial", price: 350, includesHotel: true, isRemote: false },
     });
+
+    const localTicketTypeWithoutHotel = await prisma.ticketType.create({
+      data: { name: "Presencial", price: 350 , includesHotel: false, isRemote: false },
+    });
+    
 
     // BOLD TEXT, GREEN TEXT, "MESSAGE", RESET TERMINAL STYLES
     console.log("\x1b[1m", "\x1b[32m", `✔️ "Presencial" and "Online" ticket types created successfully 🥳 `, "\x1b[0m");
