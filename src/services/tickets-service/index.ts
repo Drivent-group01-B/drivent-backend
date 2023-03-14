@@ -27,7 +27,7 @@ async function getTicketByUserId(userId: number) {
   return ticket;
 }
 
-async function createTicket(userId: number, ticketTypeId: number, includedHotel: boolean) {
+async function createTicket(userId: number, ticketTypeId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) {
     throw notFoundError();
@@ -37,7 +37,6 @@ async function createTicket(userId: number, ticketTypeId: number, includedHotel:
     ticketTypeId,
     enrollmentId: enrollment.id,
     status: TicketStatus.RESERVED,
-    includedHotel
   };
 
   await ticketRepository.createTicket(ticketData);
@@ -69,14 +68,15 @@ async function createOrUpdateTicket(userId: number, ticketParams: PartialTicketP
 
   const ticketData: CreateTicketParams = {
     enrollmentId: ticketParams.enrollmentId,
-    includedHotel: ticketParams.includedHotel,
     status: ticketParams.status,
     ticketTypeId: ticketParams.ticketTypeId
   };
 
-  const newTicket = await ticketRepository.upsert(ticketParams.id, ticketData, exclude(ticketData, "enrollmentId"));
+  await ticketRepository.upsert(ticketParams.id, ticketData, exclude(ticketData, "enrollmentId"));
 
-  return newTicket; 
+  const ticket = await ticketRepository.findTicketByEnrollmentId(ticketParams.enrollmentId);
+
+  return ticket;
 }
 
 const ticketService = {

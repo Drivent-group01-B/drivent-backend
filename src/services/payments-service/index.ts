@@ -33,11 +33,10 @@ async function paymentProcess(ticketId: number, userId: number, cardData: CardPa
   const ticket = await ticketRepository.findTickeWithTypeById(ticketId);
 
   const price: number = ticket.TicketType.price as number;
-  const hotelTax: number = ticket.TicketType.hotelTax as number;
 
   const paymentData = {
     ticketId,
-    value: ticket.includedHotel ? price + hotelTax : price,
+    value: price,
     cardIssuer: cardData.issuer,
     cardLastDigits: cardData.number.toString().slice(-4),
   };
