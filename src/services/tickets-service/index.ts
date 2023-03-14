@@ -1,9 +1,9 @@
-import { notFoundError, unauthorizedError } from "@/errors";
-import ticketRepository, { CreateTicketParams } from "@/repositories/ticket-repository";
-import enrollmentRepository from "@/repositories/enrollment-repository";
+import { notFoundError, unauthorizedError } from "../../errors";
+import ticketRepository, { CreateTicketParams } from "../../repositories/ticket-repository";
+import enrollmentRepository from "../../repositories/enrollment-repository";
 import { Ticket, TicketStatus } from "@prisma/client";
 import { createTicketType } from "../../factories";
-import { exclude } from "@/utils/prisma-utils";
+import { exclude } from "../../utils/prisma-utils";
 
 async function getTicketTypes() {
   const ticketTypes = await ticketRepository.findTicketTypes();

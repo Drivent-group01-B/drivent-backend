@@ -1,5 +1,5 @@
-import faker from "@faker-js/faker";
-import { prisma } from "@/config";
+import faker from "..faker-js/faker";
+import { prisma } from "../config";
 import { TicketStatus } from "@prisma/client";
 
 export async function createTicketType() {
