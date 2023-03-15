@@ -10,8 +10,13 @@ async function getActivities() {
   return activities;
 }
 
+async function getActivitiesByDate(date: Date) {
+  return await activityRepository.findActivitiesByDate(date);
+}
+
 const ActivityService = {
-  getActivities
+  getActivities,
+  getActivitiesByDate,
 };
 
 export default ActivityService;
