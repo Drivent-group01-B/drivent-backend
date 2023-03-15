@@ -2,6 +2,7 @@ import { Hotel, PrismaClient, Room } from "@prisma/client";
 import dayjs from "dayjs";
 const prisma = new PrismaClient();
 import bcrypt from "bcrypt";
+import { time } from "console";
 
 async function main() {
   let event = await prisma.event.findFirst();
@@ -24,11 +25,11 @@ async function main() {
     });
 
     const localTicketType = await prisma.ticketType.create({
-      data: { name: "Presencial", price: 350, includesHotel: true, isRemote: false },
+      data: { name: "Presencial", price: 600, includesHotel: true, isRemote: false },
     });
 
     const localTicketTypeWithoutHotel = await prisma.ticketType.create({
-      data: { name: "Presencial", price: 350 , includesHotel: false, isRemote: false },
+      data: { name: "Presencial", price: 250 , includesHotel: false, isRemote: false },
     });
     
 
@@ -235,6 +236,142 @@ async function main() {
     // BOLD TEXT, GREEN TEXT, "MESSAGE", RESET TERMINAL STYLES
     console.log("\x1b[1m", "\x1b[32m", `✔️ "hotels with rooms created successfully 🥳 `, "\x1b[0m");
   }
+
+  const locations = await prisma.location.findMany();
+  if (locations.length === 0) { 
+    const locations = [
+      {
+        name: 'Auditório Principal'
+      },
+      {
+        name: 'Auditório Lateral'
+      },
+      {
+        name: 'Sala de Workshop'
+      },
+    ];
+
+    await prisma.location.createMany({
+      data: locations
+    });
+  }
+
+  const dates = await prisma.dateEvent.findMany();
+  if (dates.length === 0) { 
+    const dates = [
+      {
+        dateEvent: new Date('03/27/2023')
+      },
+      {
+        dateEvent: new Date('03/28/2023')
+      },
+      {
+        dateEvent: new Date('03/29/2023')
+      },
+    ];
+
+    await prisma.dateEvent.createMany({
+      data: dates
+    });
+  }
+
+  const activities = await prisma.activity.findMany();
+  if (activities.length === 0) { 
+    const locations = await prisma.location.findMany();
+    const event = await prisma.event.findFirst();
+
+    if(locations?.length > 0 && event) {
+      console.log('esntrou no if');
+      const activities = [
+        {
+          name: 'AWS Fundamentals',
+          vacancies: 4,
+          start_at: new Date('2023-03-27T08:00:00Z'),
+          end_at: new Date('2023-03-27T09:00:00Z'),
+          eventId: event?.id,
+          locationId: locations[0]?.id
+        },
+        {
+          name: 'LOL - Montando o pc perfeito',
+          vacancies: 2,
+          start_at: new Date('2023-03-27T09:00:00Z'),
+          end_at: new Date('2023-03-27T10:00:00Z'),
+          eventId: event?.id,
+          locationId: locations[0]?.id
+        },
+        {
+          name: 'Palestra - LGPD',
+          vacancies: 23,
+          start_at: new Date('2023-03-28T08:00:00Z'),
+          end_at: new Date('2023-03-28T10:00:00Z'),
+          eventId: event?.id,
+          locationId: locations[1]?.id
+        },
+        {
+          name: 'Workshop - Empreendedorismo em TECH',
+          vacancies: 2,
+          start_at: new Date('2023-03-29T08:00:00Z'),
+          end_at: new Date('2023-03-29T09:00:00Z'),
+          eventId: event?.id,
+          locationId: locations[2]?.id
+        },
+        {
+          name: 'Workshop - Redis',
+          vacancies: 10,
+          start_at: new Date('2023-03-29T09:00:00Z'),
+          end_at: new Date('2023-03-29T10:00:00Z'),
+          eventId: event?.id,
+          locationId: locations[2]?.id
+        },
+      ];
+
+      await prisma.activity.createMany({
+        data: activities
+      });
+
+    }
+   
+
+    
+  }
+
+  const schedules = await prisma.schedule.findMany();
+  if (schedules.length === 0) { 
+    const activities = await prisma.activity.findMany();
+    const dates = await prisma.dateEvent.findMany();
+
+    if(activities?.length > 0 && dates?.length > 0) {
+      const schedules = [
+        {
+          activityId: activities[0]?.id,
+          dateId: dates[0]?.id 
+        },
+        {
+          activityId: activities[1]?.id,
+          dateId: dates[0]?.id 
+        },
+        {
+          activityId: activities[2]?.id,
+          dateId: dates[1]?.id 
+        },
+        {
+          activityId: activities[3]?.id,
+          dateId: dates[2]?.id 
+        },
+        {
+          activityId: activities[4]?.id,
+          dateId: dates[2]?.id 
+        },
+      ];
+
+      await prisma.schedule.createMany({
+        data: schedules
+      });
+
+    }
+   
+  }
+
 }
 
 main()
