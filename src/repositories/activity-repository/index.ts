@@ -14,10 +14,10 @@ async function findActivities() {
   });
 }
 
-async function findActivitiesByDate(date: Date) {
+async function findActivitiesByDate(date: Date, enrollmentId: number) {
   const dateAfter = dayjs(date).add(1, "day");
 
-  const data = await prisma.activity.findMany({
+  const activities = await prisma.activity.findMany({
     where: {
       Schedule: {
         some: {
@@ -27,9 +27,12 @@ async function findActivitiesByDate(date: Date) {
         },
       },
     },
+    include: {
+      Subscription: { where: { Enrollment: { id: enrollmentId } } },
+    },
   });
 
-  return data;
+  return activities.map(({ Subscription, ...rest }) => ({ ...rest, subscribed: Subscription.length > 0 }));
 }
 
 const activityRepository = {

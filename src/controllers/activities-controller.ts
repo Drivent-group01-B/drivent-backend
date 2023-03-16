@@ -5,11 +5,12 @@ import httpStatus from "http-status";
 
 export async function listActivities(req: AuthenticatedRequest, res: Response) {
   const date = req.query?.date as string;
+  const { userId } = req;
 
   try {
     if (date) {
       const parsedDate = new Date(date);
-      const activities = await ActivityService.getActivitiesByDate(parsedDate);
+      const activities = await ActivityService.getActivitiesByDate(parsedDate, userId);
       return res.send(activities);
     }
 
