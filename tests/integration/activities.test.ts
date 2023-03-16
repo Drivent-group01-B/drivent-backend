@@ -1,7 +1,8 @@
-import app from "@/app";
-import { TicketStatus } from "@prisma/client";
+import app, { init } from "@/app";
+import { cleanDb, generateValidToken } from "../helpers";
 import httpStatus from "http-status";
 import supertest from "supertest";
+import { TicketStatus } from "@prisma/client";
 import {
   createUser,
   createEnrollmentWithAddress,
@@ -9,9 +10,13 @@ import {
   createTicket,
   createTicketTypeWithHotel,
 } from "../factories";
-import { generateValidToken } from "../helpers";
 
 const server = supertest(app);
+
+beforeAll(async () => {
+  await init();
+  await cleanDb();
+});
 
 describe("GET /activities", () => {
   it("should respond with status 401 if no token is given", async () => {
@@ -28,10 +33,9 @@ describe("GET /activities", () => {
       // const ticketType = await createTicketTypeWithHotel();
       // const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       // const payment = await createPayment(ticket.id, ticketType.price);
-      const date = "27-03-2023";
+      const date = "2023-03-23";
 
       const response = await server.get(`/activities?date=${date}`).set("Authorization", `Bearer ${token}`);
-      console.log(response);
 
       expect(response.status).toBe(httpStatus.OK);
     });
