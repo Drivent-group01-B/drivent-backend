@@ -21,3 +21,12 @@ export async function listDays(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+export async function listLocations(req: AuthenticatedRequest, res: Response) {
+  try {
+    const locations = await ActivityService.getLocations();
+    return res.status(httpStatus.OK).send(locations);
+  } catch (error) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
+

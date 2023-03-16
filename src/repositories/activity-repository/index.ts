@@ -18,9 +18,14 @@ async function findDays() {
   return prisma.dateEvent.findMany();
 }
 
+async function findLocations() {
+  return prisma.location.findMany();
+}
+
 const activityRepository = {
   findActivities,
-  findDays
+  findDays,
+  findLocations
 };
 
 export default activityRepository;
