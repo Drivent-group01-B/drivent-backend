@@ -12,3 +12,12 @@ export async function listActivities(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+export async function listDays(req: AuthenticatedRequest, res: Response) {
+  try {
+    const days = await ActivityService.getDays();
+    return res.status(httpStatus.OK).send(days);
+  } catch (error) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
+
