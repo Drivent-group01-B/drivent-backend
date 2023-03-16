@@ -29,10 +29,15 @@ async function findActivitiesByDate(date: Date, enrollmentId: number) {
     },
     include: {
       Subscription: { where: { Enrollment: { id: enrollmentId } } },
+      _count: { select: { Subscription: true } },
     },
   });
 
-  return activities.map(({ Subscription, ...rest }) => ({ ...rest, subscribed: Subscription.length > 0 }));
+  return activities.map(({ Subscription, _count, vacancies, ...rest }) => ({
+    ...rest,
+    subscribed: Subscription.length > 0,
+    availableVacancies: vacancies - _count.Subscription,
+  }));
 }
 
 const activityRepository = {

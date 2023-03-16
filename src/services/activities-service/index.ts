@@ -20,9 +20,9 @@ async function getActivitiesByDate(date: Date, userId: number) {
   return data;
 }
 
-const ActivityService = {
+const activityService = {
   getActivities,
   getActivitiesByDate,
 };
 
-export default ActivityService;
+export default activityService;
