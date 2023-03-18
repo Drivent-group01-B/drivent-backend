@@ -18,7 +18,7 @@ import {
   hotelsRouter,
   bookingRouter,
   activityRouter
-} from "@/routers";
+} from "./routers";
 
 const app = express();
 app

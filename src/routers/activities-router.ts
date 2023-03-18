@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticateToken } from "@/middlewares";
-import { listActivities, listDays, listLocations } from "@/controllers";
+import { authenticateToken } from "../middlewares";
+import { listActivities, listDays, listLocations } from "../controllers";
 
 const activityRouter = Router();
 

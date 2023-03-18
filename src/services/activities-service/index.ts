@@ -1,5 +1,5 @@
-import { notFoundError } from "@/errors";
-import activityRepository from "@/repositories/activity-repository";
+import { notFoundError } from "../../errors";
+import activityRepository from "../../repositories/activity-repository";
 
 async function getActivities() {
   const activities = await activityRepository.findActivities();

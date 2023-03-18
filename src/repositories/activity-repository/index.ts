@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../../config";
 import { Activity } from "@prisma/client";
 
 async function findActivities() {
