@@ -14,6 +14,14 @@ async function findActivities() {
   });
 }
 
+async function findDays() {
+  return prisma.dateEvent.findMany();
+}
+
+async function findLocations() {
+  return prisma.location.findMany();
+}
+
 async function findActivitiesByDate(date: Date, enrollmentId: number) {
   const dateAfter = dayjs(date).add(1, "day");
 
@@ -42,6 +50,8 @@ async function findActivitiesByDate(date: Date, enrollmentId: number) {
 
 const activityRepository = {
   findActivities,
+  findDays,
+  findLocations,
   findActivitiesByDate,
 };
 
