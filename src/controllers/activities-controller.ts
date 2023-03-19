@@ -30,3 +30,17 @@ export async function listLocations(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+export async function postSubscriptions(req: AuthenticatedRequest, res: Response) {
+  try {
+    const { userId } = req;
+    const { activityId } = req.body;
+    if (!activityId) {
+      return res.sendStatus(httpStatus.BAD_REQUEST);
+    }
+    const subscription = await ActivityService.postSubscriptions(userId, Number(activityId));
+    return res.status(httpStatus.CREATED).send(subscription);
+  } catch (error) {
+    return res.status(error.status).send(error.message);
+  }
+}
+
