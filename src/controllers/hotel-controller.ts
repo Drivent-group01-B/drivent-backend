@@ -49,6 +49,7 @@ export async function getHotelRoomsDetailsByHotelId(req: AuthenticatedRequest, r
     return res.status(httpStatus.OK).send(rooms);
   } catch (error) {
     handleApplicationErrors(error, req, res);
+
     if (error.name === "NotFoundError") {
       return res.sendStatus(httpStatus.NOT_FOUND);
     }

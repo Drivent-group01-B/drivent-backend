@@ -2,6 +2,8 @@ import enrollmentRepository from "../../repositories/enrollment-repository";
 import { notFoundError, requestError } from "../../errors";
 import activityRepository from "../../repositories/activity-repository";
 import tikectRepository from "../../repositories/ticket-repository";
+import enrollmentsService from "../enrollments-service";
+
 
 async function getActivities() {
   const activities = await activityRepository.findActivities();
@@ -97,12 +99,22 @@ async function getSubscriptions(userId: number, activityId: number)
   return subscription;
 }
 
-const ActivityService = {
+async function getActivitiesByDate(date: Date, userId: number) {
+  const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);
+  const data = await activityRepository.findActivitiesByDate(date, enrollment.id);
+
+  if (!data) throw notFoundError();
+
+  return data;
+}
+
+const activityService = {
   getActivities,
   getDays,
   getLocations,
+  getActivitiesByDate,
   postSubscriptions,
   getSubscriptions
 };
 
-export default ActivityService;
+export default activityService;
