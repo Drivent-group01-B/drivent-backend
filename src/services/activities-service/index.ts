@@ -1,5 +1,6 @@
 import { notFoundError } from "@/errors";
 import activityRepository from "@/repositories/activity-repository";
+import enrollmentsService from "../enrollments-service";
 
 async function getActivities() {
   const activities = await activityRepository.findActivities();
@@ -28,10 +29,20 @@ async function getLocations() {
   return locations;
 }
 
-const ActivityService = {
+async function getActivitiesByDate(date: Date, userId: number) {
+  const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);
+  const data = await activityRepository.findActivitiesByDate(date, enrollment.id);
+
+  if (!data) throw notFoundError();
+
+  return data;
+}
+
+const activityService = {
   getActivities,
   getDays,
-  getLocations
+  getLocations,
+  getActivitiesByDate,
 };
 
-export default ActivityService;
+export default activityService;

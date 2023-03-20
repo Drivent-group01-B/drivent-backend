@@ -2,7 +2,6 @@ import { notFoundError, unauthorizedError } from "@/errors";
 import ticketRepository, { CreateTicketParams } from "@/repositories/ticket-repository";
 import enrollmentRepository from "@/repositories/enrollment-repository";
 import { Ticket, TicketStatus } from "@prisma/client";
-import { createTicketType } from "../../factories";
 import { exclude } from "@/utils/prisma-utils";
 
 async function getTicketTypes() {
@@ -49,7 +48,7 @@ async function createTicket(userId: number, ticketTypeId: number) {
 type PartialTicketParams = Partial<Ticket>;
 
 async function createOrUpdateTicket(userId: number, ticketParams: PartialTicketParams) {
-  if(!ticketParams?.enrollmentId) {
+  if (!ticketParams?.enrollmentId) {
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
     if (!enrollment) {
       throw notFoundError();
@@ -57,19 +56,19 @@ async function createOrUpdateTicket(userId: number, ticketParams: PartialTicketP
     ticketParams.enrollmentId = enrollment.id;
   }
 
-  if(!ticketParams?.id) {
+  if (!ticketParams?.id) {
     ticketParams.id = 0;
     ticketParams.status = TicketStatus.RESERVED;
   }
 
-  if(ticketParams.status === "PAID") {
+  if (ticketParams.status === "PAID") {
     throw unauthorizedError();
   }
 
   const ticketData: CreateTicketParams = {
     enrollmentId: ticketParams.enrollmentId,
     status: ticketParams.status,
-    ticketTypeId: ticketParams.ticketTypeId
+    ticketTypeId: ticketParams.ticketTypeId,
   };
 
   await ticketRepository.upsert(ticketParams.id, ticketData, exclude(ticketData, "enrollmentId"));
@@ -83,7 +82,7 @@ const ticketService = {
   getTicketTypes,
   getTicketByUserId,
   createTicket,
-  createOrUpdateTicket
+  createOrUpdateTicket,
 };
 
 export default ticketService;
