@@ -50,6 +50,18 @@ async function findSubscription(enrollmentId: number) {
   });
 }
 
+async function findSubscriptionByActivities(activityId: number, enrollmentId: number) {
+  return prisma.subscription.findFirst({
+    where: {
+      enrollmentId: enrollmentId,
+      activityId: activityId,
+    },
+    include: {
+      Activity: true,
+    }
+  });
+}
+
 async function findActivitiesById(id: number) 
 {
   return prisma.activity.findUnique({
@@ -63,7 +75,8 @@ const activityRepository = {
   findLocations,
   findSubscription,
   findActivitiesById,
-  createSubscription
+  createSubscription,
+  findSubscriptionByActivities
 };
 
 export default activityRepository;

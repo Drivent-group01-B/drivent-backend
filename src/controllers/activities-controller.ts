@@ -44,3 +44,17 @@ export async function postSubscriptions(req: AuthenticatedRequest, res: Response
   }
 }
 
+export async function getSubscriptions(req: AuthenticatedRequest, res: Response) {
+  try {
+    const { userId } = req;
+    const activityId= Number(req.params.activityId);
+    if (!activityId) {
+      return res.sendStatus(httpStatus.BAD_REQUEST);
+    }
+    const subscription = await ActivityService.getSubscriptions(userId, Number(activityId));
+    return res.status(httpStatus.OK).send(subscription);
+  } catch (error) {
+    return res.status(error.status).send(error.message);
+  }
+}
+

@@ -81,11 +81,28 @@ async function postSubscriptions(userId: number, activityId: number)
   }
 }
 
+async function getSubscriptions(userId: number, activityId: number)
+{
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollment) {
+    throw notFoundError();
+  }
+
+  const activities = await activityRepository.findActivitiesById(activityId);
+  if (!activities) {
+    throw notFoundError();
+  }
+
+  const subscription = await activityRepository.findSubscriptionByActivities(activityId, enrollment.id);
+  return subscription;
+}
+
 const ActivityService = {
   getActivities,
   getDays,
   getLocations,
-  postSubscriptions
+  postSubscriptions,
+  getSubscriptions
 };
 
 export default ActivityService;
