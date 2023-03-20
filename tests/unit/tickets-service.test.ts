@@ -53,11 +53,11 @@ describe("tickets service suit tests", () => {
           price: 600,
           isRemote: false,
           includesHotel: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: "2023-03-03T12:00:00Z",
+          updatedAt: "2023-03-03T12:00:00Z",
         },
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: "2023-03-07T12:00:00Z",
+        updatedAt: "2023-03-07T12:00:00Z",
       };
     });
 
@@ -75,11 +75,11 @@ describe("tickets service suit tests", () => {
           price: 600,
           isRemote: false,
           includesHotel: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: "2023-03-03T12:00:00Z",
+          updatedAt: "2023-03-03T12:00:00Z",
         },
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: "2023-03-07T12:00:00Z",
+        updatedAt: "2023-03-07T12:00:00Z",
       }
     );
   });

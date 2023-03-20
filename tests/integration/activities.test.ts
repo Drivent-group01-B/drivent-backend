@@ -10,6 +10,7 @@ import {
   createTicket,
   createTicketTypeWithHotel,
 } from "../factories";
+import { array, object } from "joi";
 
 const server = supertest(app);
 
@@ -29,11 +30,11 @@ describe("GET /activities", () => {
     it("should respond with activities data given a date", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
-      // const enrollment = await createEnrollmentWithAddress(user);
+      const enrollment = await createEnrollmentWithAddress(user);
       // const ticketType = await createTicketTypeWithHotel();
       // const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       // const payment = await createPayment(ticket.id, ticketType.price);
-      const date = "2023-03-23";
+      const date = "2023-03-27";
 
       const response = await server.get(`/activities?date=${date}`).set("Authorization", `Bearer ${token}`);
 

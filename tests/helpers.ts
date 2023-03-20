@@ -13,8 +13,8 @@ export async function cleanDb() {
   await prisma.subscription.deleteMany();
   await prisma.schedule.deleteMany();
   await prisma.dateEvent.deleteMany();
-  await prisma.activity.deleteMany();
   await prisma.location.deleteMany();
+  await prisma.activity.deleteMany();
 
   await prisma.enrollment.deleteMany({});
   await prisma.event.deleteMany({});
