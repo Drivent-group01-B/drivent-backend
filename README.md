@@ -8,6 +8,16 @@ Back-end for Driven.t, an event management solution.
 
 Driven.t is a web browser application with which you can manage every single aspect of your event.
 
+#### Check out our front-end repository at https://github.com/Drivent-group01-B/drivent-frontend
+
+## Screenshots
+![screenshot](./screenshots/login.png)
+![screenshot](./screenshots/my-info.png)
+![screenshot](./screenshots/payment-ticket-1.png)
+![screenshot](./screenshots/payment-ticket-2.png)
+![screenshot](./screenshots/room-hotel-1.png)
+![screenshot](./screenshots/room-hotel-2.png)
+
 ## How to run for development
 
 1. Clone this repository
@@ -22,7 +32,7 @@ npm i
 5. Run all migrations
 
 ```bash
-npm run migration:run
+npm run dev:migration:run
 ```
 
 6. Seed db
