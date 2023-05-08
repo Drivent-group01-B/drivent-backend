@@ -24,7 +24,8 @@ async function findLocations() {
 }
 
 async function createSubscription(activityId: number, enrollmentId: number, vacancies: number) {
-  const [sub, a] = await prisma.$transaction([
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [sub, _] = await prisma.$transaction([
     prisma.subscription.create({
       data: {
         activityId: activityId,
@@ -64,11 +65,11 @@ async function findSubscriptionByActivities(activityId: number, enrollmentId: nu
   });
 }
 
-async function findActivitiesById(id: number) 
-{
+async function findActivitiesById(id: number) {
   return prisma.activity.findUnique({
     where: { id },
   });
+}
 
 async function findActivitiesByDate(date: Date, enrollmentId: number) {
   const dateAfter = dayjs(date).add(1, "day");
@@ -104,7 +105,7 @@ const activityRepository = {
   findSubscription,
   findActivitiesById,
   createSubscription,
-  findSubscriptionByActivities
+  findSubscriptionByActivities,
   findActivitiesByDate,
 
 };
